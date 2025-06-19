@@ -13,7 +13,7 @@ WORKDIR /app
 
 # Клонируем репозиторий заново, чтобы LFS сработал (вставь свой репозиторий и токен)
 ARG GIT_TOKEN
-ARG GIT_REPO=https://<TOKEN>@github.com/username/repo.git
+ARG GIT_REPO=https://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@github.com/Meditor-Co-Ltd/algo-project
 
 RUN git clone ${GIT_REPO} . && git lfs pull
 
