@@ -1114,6 +1114,59 @@ def debug_model_keys():
     except Exception as e:
         return jsonify({"error": str(e), "traceback": traceback.format_exc()})
 
+@app.route('/debug/file-content', methods=['GET'])
+def debug_file_content():
+    """Check what's actually in the model file"""
+    try:
+        files = os.listdir('.')
+        model_files = [f for f in files if '.pkl' in f or '.gz' in f]
+        
+        if not model_files:
+            return jsonify({"error": "No model files found"})
+        
+        result = {}
+        
+        for model_file in model_files:
+            file_info = {
+                "size_bytes": os.path.getsize(model_file),
+                "size_mb": os.path.getsize(model_file) / 1024 / 1024,
+                "exists": os.path.exists(model_file),
+                "readable": os.access(model_file, os.R_OK)
+            }
+            
+            # Read first 100 bytes to see what's actually in the file
+            try:
+                with open(model_file, 'rb') as f:
+                    first_bytes = f.read(100)
+                    file_info["first_20_bytes_hex"] = first_bytes[:20].hex()
+                    file_info["first_50_chars_text"] = str(first_bytes[:50])
+                    
+                    # Check if it's actually a text file (like a Git LFS pointer)
+                    try:
+                        text_content = first_bytes.decode('utf-8')
+                        file_info["text_content"] = text_content
+                        
+                        # Check for Git LFS
+                        if "version https://git-lfs.github.com" in text_content:
+                            file_info["is_git_lfs_pointer"] = True
+                        elif "oid sha256:" in text_content:
+                            file_info["is_git_lfs_pointer"] = True
+                        else:
+                            file_info["is_git_lfs_pointer"] = False
+                            
+                    except UnicodeDecodeError:
+                        file_info["is_text_file"] = False
+                        
+            except Exception as e:
+                file_info["read_error"] = str(e)
+            
+            result[model_file] = file_info
+        
+        return jsonify(result)
+        
+    except Exception as e:
+        return jsonify({"error": str(e), "traceback": traceback.format_exc()})
+
 if __name__ == '__main__':
     print("🚀 GLUCOSE PREDICTION API - MEMORY-OPTIMIZED DEPLOYMENT")
     print("=" * 65)
