@@ -22,7 +22,7 @@ COPY *.py .
 # Replace tag_1 with your actual release tag
 RUN echo "📥 Downloading 700MB model file..." && \
     curl -L -o model_compressed.pkl.gz \
-    "https://github.com/YOUR_USERNAME/YOUR_REPO/releases/download/tag_1/model_compressed.pkl.gz" && \
+    "https://github.com/Meditor-Co-Ltd/algo-project/releases/download/tag_1/model_compressed.pkl.gz" && \
     echo "✅ Model download completed" && \
     ls -lh model_compressed.pkl.gz
 
