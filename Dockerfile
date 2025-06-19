@@ -3,6 +3,9 @@ FROM python:3.9-slim
 # Install system dependencies
 RUN apt-get update && apt-get install -y gcc && rm -rf /var/lib/apt/lists/*
 
+# Install Git LFS
+RUN apt-get update && apt-get install -y git-lfs && git lfs install
+
 WORKDIR /app
 
 # Copy and install requirements
@@ -14,6 +17,9 @@ COPY . .
 
 # Simple check for model files
 RUN ls -la && echo "Checking for model files:" && ls -la *.pkl* *.gz 2>/dev/null || echo "No .pkl/.gz files found"
+
+# Pull LFS files after clone
+RUN git lfs pull
 
 # Set environment variables
 ENV PYTHONUNBUFFERED=1
