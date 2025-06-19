@@ -1,0 +1,63 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Documentation
+README.md
+*.md
+
+# Tests
+tests/
+test_*.py
+*_test.py
+
+# Logs
+*.log
+logs/
+
+# Development files
+.env
+.env.local
+
+# ВАЖНО: НЕ исключаем файлы модели!
+# НЕ добавляйте сюда:
+# *.pkl
+# *.pkl.gz
+# model_compressed.pkl.gz
